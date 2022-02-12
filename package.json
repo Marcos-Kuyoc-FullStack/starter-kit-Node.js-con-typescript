@@ -16,7 +16,6 @@
     "@types/helmet": "^4.0.0",
     "compression": "^1.7.4",
     "express": "^4.17.2",
-    "git-conventional-commits": "^1.1.0",
     "helmet": "^5.0.2",
     "inversify": "^6.0.1",
     "inversify-express-utils": "^6.4.3",
@@ -25,6 +24,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
+    "git-commit-msg-linter": "^4.0.7",
     "ts-node-dev": "^1.1.8",
     "winston": "^3.5.1"
   }
