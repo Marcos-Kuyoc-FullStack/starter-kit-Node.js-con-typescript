@@ -1,13 +1,13 @@
 import bodyParser from 'body-parser'
 import helmet from 'helmet'
 import compress from 'compression'
-import * as http from 'http';
 import 'reflect-metadata';
 import { InversifyExpressServer } from 'inversify-express-utils';
 import { Container } from 'inversify';
 import { IServer } from '../server.interface';
 import { bindings } from './inversify.config';
-
+import { loggerMiddleware } from '../../../middlewares/logger';
+import { errorHandler } from '../../../middlewares/error-handler';
 
 export class ServerInversify implements IServer{
   private readonly port: string;
@@ -27,8 +27,14 @@ export class ServerInversify implements IServer{
       app.use(helmet.noSniff());
       app.use(helmet.hidePoweredBy());
       app.use(helmet.frameguard({action: 'deny'}));
-      app.use(compress())
+      app.use(compress());
+      app.use(loggerMiddleware);
     });
+    server.setErrorConfig((app) => {
+      app.use(errorHandler);
+    });
+    
+
     return server;
   }
 
