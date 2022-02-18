@@ -6,8 +6,8 @@
   "scripts": {
     "build": "yarn clean && yarn build:tsc",
     "build:tsc": "tsc -p tsconfig.json",
-    "clean": "rm -r dist",
-    "developer": "NODE_ENV=developer ts-node-dev --ignore-watch node_modules  ./src/index.ts",
+    "clean": "rm -rf dist",
+    "dev": "NODE_ENV=developer ts-node-dev --ignore-watch node_modules  ./src/index.ts",
     "test": "yarn test:unit",
     "test:acceptance": "jest -c jest.acceptance.json",
     "test:unit": "jest -c jest.unit.json",
