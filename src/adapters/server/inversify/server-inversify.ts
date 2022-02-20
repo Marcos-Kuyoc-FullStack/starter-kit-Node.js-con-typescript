@@ -10,17 +10,20 @@ import { loggerMiddleware } from '../../../middlewares/logger';
 import { errorHandler } from '../../../middlewares/error-handler';
 
 export class ServerInversify implements IServer{
-  private readonly port: string;
-
+  private port: string;
+  private app: InversifyExpressServer;
+  public server: any;
+  
   constructor(port: string) {
     this.port = port;
+    let container = new Container();
+    container.loadAsync(bindings);
+    this.app = new InversifyExpressServer(container);
+    this.init();
   }
 
-  async start () {
-    let container = new Container();
-    await container.loadAsync(bindings);
-    const server = new InversifyExpressServer(container);
-    server.setConfig((app) => {
+  init () {
+    this.app.setConfig((app) => {
       app.use(bodyParser.json());
       app.use(bodyParser.urlencoded({extended: true}));
       app.use(helmet.xssFilter());
@@ -30,19 +33,25 @@ export class ServerInversify implements IServer{
       app.use(compress());
       app.use(loggerMiddleware);
     });
-    server.setErrorConfig((app) => {
+    this.app.setErrorConfig((app) => {
       app.use(errorHandler);
-    });
-    
-
-    return server;
+    });    
+    this.server = this.app.build();
   }
 
+  getHTTPServer() {
+    return this.server;
+  }
 
   async listen(): Promise<void> {
-    const server = await this.start();
-    let serverInstance = server.build();
-    serverInstance.listen(this.port);
-    console.log(`App is running at http://localhost:${this.port}`);
+    try {
+      this.server.listen(this.port);
+    } catch (error) {
+      console.log(`Puerto no valido ${error}`)
+    }
+  }
+
+  async close(): Promise<void> {
+    process.on('exit', function() { process.exit(1); });
   }
 }

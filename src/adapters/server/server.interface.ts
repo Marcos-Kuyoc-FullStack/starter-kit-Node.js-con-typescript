@@ -1,3 +1,4 @@
 export interface IServer {
-  listen(): Promise<void>
+  listen(): Promise<void>;
+  close(): Promise<void>;
 }

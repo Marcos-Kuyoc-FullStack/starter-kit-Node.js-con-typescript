@@ -1,11 +1,14 @@
-import {App} from './application'
+import App from './application'
 
-try {
-  new App().start();
-} catch (error) {
-  console.log(error);
-  process.exit(1);
-}
+(async function(){ 
+  try {
+    const app = new App();
+    await app.start();
+  } catch (error) {
+    console.log(error);
+    process.exit(1);  
+  }
+})();
 
 process.on('uncaughtException', error => {
   console.log('uncaughtException', error)

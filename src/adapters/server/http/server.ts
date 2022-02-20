@@ -46,7 +46,7 @@ export class Server implements IServer{
     return this.httpServer;
   }
 
-  async stop(): Promise<void> {
+  async close(): Promise<void> {
     return new Promise((resolve, reject) => {
       if (this.httpServer) {
         this.httpServer.close(error => {
