@@ -1,5 +1,4 @@
 import { controller, httpGet } from 'inversify-express-utils';
-import HttpError from 'http-errors';
 import { Request, Response } from 'express';
 
 @controller('/')
