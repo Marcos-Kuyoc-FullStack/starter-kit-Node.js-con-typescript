@@ -1,0 +1,2 @@
+# endpoints
+/payments/stripe/orders
